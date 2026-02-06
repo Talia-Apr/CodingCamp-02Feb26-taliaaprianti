@@ -1,0 +1,31 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background-color: bisque;
+}
+
+.day {
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.day:hover {
+    background-color: #e0e7ff;
+}
+
+.active-day {
+    background-color: #6366f1;
+    color: white;
+    font-weight: bold;
+}
+
+.has-event::after {
+    content: "•";
+    display: block;
+    font-size: 18px;
+    color: red;
+    line-height: 10px;
+}

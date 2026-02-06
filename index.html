@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/png" href="img/note1.png">
+
+    <title>To Do List</title>
+</head>
+
+<body class="min-h-screen flex justify-center">
+    <div class="w-full max-w-4xl mt-10">
+        <!-- MODAL KALENDER -->
+        <div id="calendarModal" class="fixed inset-0 bg-black/40 hidden flex items-center justify-center z-50">
+            <div class="bg-white p-5 rounded-xl shadow w-full max-w-md">                
+                <!-- HEADER -->
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-lg">Pilih Tanggal</h3>
+                    <button onclick="closeCalendarModal()" class="text-gray-500">✕</button>
+                </div>
+
+                <!-- KALENDER -->
+                <div class="bg-white">
+                    <div class="flex justify-between items-center mb-4">
+                        <button onclick="changeMonth(-1)"
+                            class="px-3 py-1 bg-gray-200 rounded">◀</button>
+
+                        <h2 id="monthYear" class="font-bold text-lg"></h2>
+
+                        <button onclick="changeMonth(1)"
+                            class="px-3 py-1 bg-gray-200 rounded">▶</button>
+                    </div>
+
+                    <div class="grid grid-cols-7 text-center font-semibold text-sm mb-2">
+                        <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div>
+                        <div>Kam</div><div>Jum</div><div>Sab</div>
+                    </div>
+
+                    <div id="calendar" class="grid grid-cols-7 gap-2 text-center"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center mt-10">
+            
+            <div class="w-full max-w-4xl bg-white p-6 rounded-xl shadow mt-12">    
+                <h1 class="text-center font-bold text-3xl mb-2 text-primary">
+                    <i class="fa-regular fa-note-sticky mr-2"></i>
+                    To Do List
+                </h1>
+                <hr class="mb-2 border-warning border-2 opacity-50">
+         
+            <!-- FORM INPUT -->
+            <div class="w-full mb-6">
+                <div class="flex gap-4 items-end">
+
+                    <!-- Nama Kegiatan -->
+                    <fieldset class="fieldset flex-1">
+                        <legend class="fieldset-legend">Nama Kegiatan</legend>
+                        <input
+                            id="activityInput"
+                            type="text"
+                            class="input input-bordered w-full"
+                            placeholder="Masukkan nama kegiatan"
+                        />
+                    </fieldset>
+
+                    <!-- Tanggal -->
+                    <fieldset class="fieldset w-56">
+                        <legend class="fieldset-legend">Tanggal</legend>
+                        <button
+                            id="dateButton"
+                            onclick="openCalendar('add')"
+                            class="input input-bordered w-full text-left text-gray-500"
+                        >
+                            Pilih tanggal
+                        </button>
+
+                    </fieldset>
+
+                    <!-- Tombol Tambah -->
+                    <fieldset class="fieldset">
+                        <legend class="fieldset-legend invisible">Tambah</legend>
+                        <button
+                            onclick="addActivity()"
+                            class="btn btn-primary w-32"
+                        >
+                            <i class="fa-solid fa-plus"></i>
+                            Tambah
+                        </button>
+                    </fieldset>
+
+                </div>
+            </div>
+
+        <!-- SEARCH + FILTER + HAPUS SEMUA -->
+        <div class="w-full flex gap-4 items-end mb-4">
+
+            <!-- SEARCH -->
+            <fieldset class="fieldset flex-1">
+                <legend class="fieldset-legend invisible">Cari</legend>
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass
+                        absolute left-4 z-10 top-1/2 -translate-y-1/2
+                        text-gray-400 pointer-events-none"></i>
+
+                    <input
+                        id="searchInput"
+                        onkeyup="renderTable()"
+                        type="text"
+                        placeholder="Cari kegiatan..."
+                        class="input input-bordered w-full pl-12"
+                    />
+                </div>
+            </fieldset>
+
+            <!-- FILTER TANGGAL -->
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend">Filter Tanggal</legend>
+
+                <!-- TAMPILAN -->
+                <button
+                    id="filterDateButton"
+                    onclick="openCalendar('filter')"
+                    class="input input-bordered w-48 text-left text-gray-500"
+                >
+                    Pilih tanggal
+                </button>
+
+
+                <!-- INPUT ASLI -->
+                <input
+                    type="date"
+                    id="filterDate"
+                    onchange="setFilterDate(this.value)"
+                    class="hidden"
+                />
+            </fieldset>
+
+
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend invisible">Reset Filter</legend>
+                <button
+                    onclick="resetFilter()"
+                    class="btn btn-warning w-40"
+                >
+                    <i class="fa-solid fa-arrow-rotate-right"></i>
+                    Reset Filter
+                </button>
+            </fieldset>
+
+            <!-- HAPUS SEMUA -->
+            <fieldset class="fieldset">
+                <legend class="fieldset-legend invisible">Hapus</legend>
+                <button
+                    onclick="deleteAllActivity()"
+                    class="btn btn-error w-40"
+                >
+                    <i class="fa-solid fa-trash mr-2"></i>
+                    Hapus Semua
+                </button>
+            </fieldset>
+
+        </div>
+
+
+        <!-- TABEL -->
+        <div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Nama Kegiatan</th>
+                        <th class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody id="activityTable">
+                    <tr>
+                        <td colspan="3" class="text-center text-base-content/60">
+                            Belum ada kegiatan
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+         <hr class="mb-2 border-primary border-2 opacity-50 mt-5">
+        <footer class="text-center opacity-50 text-sm mt-3">
+            <i>
+                @ Talia Aprianti - 2026
+            </i>
+        </footer>
+        </div>
+
+       
+
+
+        <!-- SweetAlert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- JavaScript --> 
+        <script src="js/script.js"></script>
+
+    </div>
+</body>
+
+</body>
+</html>

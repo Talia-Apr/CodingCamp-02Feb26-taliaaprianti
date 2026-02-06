@@ -68,6 +68,3 @@ Project ini dibuat sebagai latihan pengembangan web front-end dengan fokus pada 
 ## 👩‍💻 Author
 
 **Talia Aprianti**
-Project ini dibuat sebagai bagian dari pembelajaran dan pengembangan kemampuan web development.
-
-<img width="1227" height="657" alt="image" src="https://github.com/user-attachments/assets/580e7fa8-ba06-4124-80ce-4bb9efc72177" />
